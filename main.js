@@ -54,9 +54,12 @@ window.requestAnimationFrame(() => spotLightHelper.help.update())
  * Objects
  */
 // Material
-const material = new THREE.MeshStandardMaterial({color: 0xff0000})
+const material = new THREE.MeshStandardMaterial()
 material.roughness = .4
 material.metalness = .8
+const materialFolder = gui.addFolder('Sphere')
+materialFolder.add(material, 'roughness', 0, 1, .001)
+materialFolder.add(material, 'metalness', 0, 1, .001)
 
 // Object
 const sphere = new THREE.Mesh(
