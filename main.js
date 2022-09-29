@@ -25,30 +25,86 @@ const ambientLight = new THREE.AmbientLight({
 })
 scene.add(ambientLight)
 
+// Helper Functions
 const addHelperToGui = (value, helperObj) => {
   const {help} = helperObj
   value ? scene.add(help) : scene.remove(help)
   window.requestAnimationFrame(() => spotLightHelper.help.update())
 }
 
+const updateHelper = helper => {
+  window.requestAnimationFrame(() => helper.help.update())
+}
+
+// Spot Lights
 const spotLight = new THREE.SpotLight(0xffffff, .5, 10, Math.PI * .1, .05, 1)
-spotLight.position.y = 1
+spotLight.position.y = 2
 scene.add(spotLight)
-// spotLight.target.position.x = -.2
 scene.add(spotLight.target)
-const spotLightFolder = gui.addFolder('Spot')
-spotLightFolder.add(spotLight, 'intensity', 0, 1, .001)
-spotLightFolder.add(spotLight, 'distance', 0, 100, 1)
-spotLightFolder.add(spotLight, 'angle', 0, Math.PI, .001)
-spotLightFolder.add(spotLight, 'penumbra', 0, 1, .001)
-spotLightFolder.add(spotLight, 'decay', 0, 5, .01)
+const spotLightFolder = gui.addFolder('Spot 1')
+spotLightFolder.add(spotLight, 'intensity', 0, 1, .001).onChange(() => updateHelper(spotLightHelper))
+spotLightFolder.add(spotLight, 'distance', 0, 100, 1).onChange(() => updateHelper(spotLightHelper))
+spotLightFolder.add(spotLight, 'angle', 0, Math.PI, .001).onChange(() => updateHelper(spotLightHelper))
+spotLightFolder.add(spotLight, 'penumbra', 0, 1, .001).onChange(() => updateHelper(spotLightHelper))
+spotLightFolder.add(spotLight, 'decay', 0, 5, .01).onChange(() => updateHelper(spotLightHelper))
+spotLightFolder.addColor(spotLight, 'color').onChange(() => updateHelper(spotLightHelper))
+spotLightFolder.add(spotLight.position, 'x', -5, 5, .25).onChange(() => updateHelper(spotLightHelper))
+spotLightFolder.add(spotLight.position, 'y', -5, 5, .25).onChange(() => updateHelper(spotLightHelper))
+spotLightFolder.add(spotLight.position, 'z', -5, 5, .25).onChange(() => updateHelper(spotLightHelper))
 const spotLightHelper = {
   help: new THREE.SpotLightHelper(spotLight),
-  helper: false
+  helper: true
 }
 spotLightFolder.add(spotLightHelper, 'helper').onChange(v => addHelperToGui(v, spotLightHelper))
-window.requestAnimationFrame(() => spotLightHelper.help.update())
-// scene.add(spotLightHelper)
+updateHelper(spotLightHelper)
+scene.add(spotLightHelper.help)
+
+const spotLight2 = new THREE.SpotLight(0xffffff, .5, 10, Math.PI * .1, .05, 1)
+spotLight2.position.x = 1
+spotLight2.position.y = 2
+spotLight2.position.z = 0
+scene.add(spotLight2)
+scene.add(spotLight2.target)
+const spotLightFolder2 = gui.addFolder('Spot 2')
+spotLightFolder2.add(spotLight2, 'intensity', 0, 1, .001).onChange(() => updateHelper(spotLightHelper2))
+spotLightFolder2.add(spotLight2, 'distance', 1, 20, 1).onChange(() => updateHelper(spotLightHelper2))
+spotLightFolder2.add(spotLight2, 'angle', 0, 1, .001).onChange(() => updateHelper(spotLightHelper2))
+spotLightFolder2.add(spotLight2, 'penumbra', 0, 1, .001).onChange(() => updateHelper(spotLightHelper2))
+spotLightFolder2.add(spotLight2, 'decay', 0, 5, .01).onChange(() => updateHelper(spotLightHelper2))
+spotLightFolder2.addColor(spotLight2, 'color').onChange(() => updateHelper(spotLightHelper2))
+spotLightFolder2.add(spotLight2.position, 'x', -5, 5, .25).onChange(() => updateHelper(spotLightHelper2))
+spotLightFolder2.add(spotLight2.position, 'y', -5, 5, .25).onChange(() => updateHelper(spotLightHelper2))
+spotLightFolder2.add(spotLight2.position, 'z', -5, 5, .25).onChange(() => updateHelper(spotLightHelper2))
+const spotLightHelper2 = {
+  help: new THREE.SpotLightHelper(spotLight2),
+  helper: true
+}
+spotLightFolder2.add(spotLightHelper2, 'helper').onChange(v => addHelperToGui(v, spotLightHelper2))
+scene.add(spotLightHelper2.help)
+
+const spotLight3 = new THREE.SpotLight(0xffffff, .5, 10, Math.PI * .1, .05, 1)
+spotLight3.position.x = -1
+spotLight3.position.y = 2
+spotLight3.position.z = 0
+scene.add(spotLight3)
+scene.add(spotLight3.target)
+const spotLightFolder3 = gui.addFolder('Spot 3')
+spotLightFolder3.add(spotLight3, 'intensity', 0, 1, .001).onChange(() => updateHelper(spotLightHelper3))
+spotLightFolder3.add(spotLight3, 'distance', 0, 100, 1).onChange(() => updateHelper(spotLightHelper3))
+spotLightFolder3.add(spotLight3, 'angle', 0, Math.PI, .001).onChange(() => updateHelper(spotLightHelper3))
+spotLightFolder3.add(spotLight3, 'penumbra', 0, 1, .001).onChange(() => updateHelper(spotLightHelper3))
+spotLightFolder3.add(spotLight3, 'decay', 0, 5, .01).onChange(() => updateHelper(spotLightHelper3))
+spotLightFolder3.addColor(spotLight3, 'color').onChange(() => updateHelper(spotLightHelper3))
+spotLightFolder3.add(spotLight3.position, 'x', -5, 5, .25).onChange(() => updateHelper(spotLightHelper3))
+spotLightFolder3.add(spotLight3.position, 'y', -5, 5, .25).onChange(() => updateHelper(spotLightHelper3))
+spotLightFolder3.add(spotLight3.position, 'z', -5, 5, .25).onChange(() => updateHelper(spotLightHelper3))
+const spotLightHelper3 = {
+  help: new THREE.SpotLightHelper(spotLight3),
+  helper: true
+}
+spotLightFolder3.add(spotLightHelper3, 'helper').onChange(v => addHelperToGui(v, spotLightHelper3))
+updateHelper(spotLightHelper3)
+scene.add(spotLightHelper3.help)
 
 /**
  * Objects
