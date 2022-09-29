@@ -138,8 +138,20 @@ const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(.5, 32, 32),
   material
 )
+sphere.castShadow = true
+sphere.receiveShadow = true
 
-scene.add(sphere)
+const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(10, 10),
+  new THREE.MeshPhongMaterial({ color: 0xaaaaaa })
+)
+floor.rotation.x = - Math.PI * .5
+floor.position.y = -.75
+floor.receiveShadow = true
+const floorFolder = gui.addFolder('Floor')
+// floorFolder.add(floor.material, 'metalness', 0, 1, .001)
+
+scene.add(sphere, floor)
 
 /**
  * Sizes
@@ -182,6 +194,9 @@ controls.enableDamping = true
  */
 const renderer = new THREE.WebGL1Renderer({canvas})
 renderer.setSize(window.innerWidth, window.innerHeight)
+renderer.shadowMap.enabled = true;
+// renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+// renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.render(scene, camera)
 
 /**
