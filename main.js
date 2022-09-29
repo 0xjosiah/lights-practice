@@ -10,6 +10,22 @@ import * as dat from 'lil-gui'
 const gui = new dat.GUI()
 gui.add(gui, 'reset')
 
+let preset = {}
+const settingsObj = {
+  value: '',
+  savePreset() {
+    preset = gui.save();
+    loadButton.enable();
+  },
+  loadPreset() {
+    gui.load( preset );
+  }
+}
+gui.add(settingsObj, 'value')
+gui.add(settingsObj, 'savePreset')
+
+const loadButton = gui.add( settingsObj, 'loadPreset' ).disable();
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
