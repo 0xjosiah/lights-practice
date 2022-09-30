@@ -58,7 +58,7 @@ const updateHelper = helper => {
 }
 
 // Spot Lights
-const spotLight = new THREE.SpotLight(0xff0000, 1, 10, Math.PI * .1, .2, 0)
+const spotLight = new THREE.SpotLight(0xff0000, 1.5, 10, Math.PI * .2, .5, 0)
 spotLight.position.x = 0
 spotLight.position.y = 5
 spotLight.position.z = 2.5
@@ -82,7 +82,7 @@ scene.add(spotLight.target)
 // updateHelper(spotLightHelper)
 // scene.add(spotLightHelper.help)
 
-const spotLight2 = new THREE.SpotLight(0x00ff00, 1, 10, Math.PI * .1, .2, 0)
+const spotLight2 = new THREE.SpotLight(0x00ff00, 1.5, 10, Math.PI * .2, .5, 0)
 spotLight2.position.x = 1.8
 spotLight2.position.y = 5
 spotLight2.position.z = -1.8
@@ -105,7 +105,7 @@ scene.add(spotLight2.target)
 // spotLightFolder2.add(spotLightHelper2, 'helper').onChange(v => addHelperToGui(v, spotLightHelper2))
 // scene.add(spotLightHelper2.help)
 
-const spotLight3 = new THREE.SpotLight(0x0000ff, 1, 10, Math.PI * .1, .2, 0)
+const spotLight3 = new THREE.SpotLight(0x0000ff, 1.5, 10, Math.PI * .2, .5, 0)
 spotLight3.position.x = -1.8
 spotLight3.position.y = 5
 spotLight3.position.z = -1.8
@@ -165,9 +165,13 @@ floor.position.y = -1.5
 floor.receiveShadow = true
 
 const room = new THREE.Mesh(
-  new THREE.BoxGeometry(10, 10, 10),
-  new THREE.MeshPhongMaterial({ color: 0xaaaaaa, side: THREE.DoubleSide })
+  // new THREE.BoxGeometry(20, 20, 20),
+  new THREE.SphereGeometry(10),
+  // new THREE.MeshPhongMaterial({ color: 0xaaaaaa, side: THREE.DoubleSide })
+  material
 )
+room.material.side = THREE.DoubleSide
+room.receiveShadow = true
 
 const octo = new THREE.Mesh(
   new THREE.OctahedronGeometry(),
@@ -179,7 +183,7 @@ octo.castShadow = true
 // const floorFolder = gui.addFolder('Floor')
 // floorFolder.add(floor.material, 'metalness', 0, 1, .001)
 
-scene.add(octo, floor)
+scene.add(sphere, room)
 
 
 /**
@@ -189,18 +193,31 @@ scene.add(octo, floor)
 
 const colorFolder = gui.addFolder('Select Color')
 colorFolder.add(colorObj, 'scheme', ['monochrome', 'monochrome-dark', 'monochrome-light', 'analogic', 'complement', 'analogic-complement', 'triad', 'quad'])
+  .onChange(v => {
+    colorObj.scheme = v
+    fetchColorData(colorObj)
+    console.log(colorObj);
+    console.log(spotLight2.color, spotLight3.color);
+  });
 colorFolder.addColor(colorObj, 'color').onChange(v => {
   colorObj.color = v
   spotLight.color = new THREE.Color(colorObj.color)
-
+  fetchColorData(colorObj)
+  console.log(colorObj);
+  console.log(spotLight2.color, spotLight3.color);
 })
 
-function fetchColorData() {
-  let mode = colorObj.scheme
-  let color = getColor(selectedColor.value)
-  fetch(`https://www.thecolorapi.com/scheme?hex=${color}&mode=${mode}&count=4`)
+function fetchColorData(colorObj) {
+  let {scheme, color} = colorObj
+  color = color.toString(16)
+  fetch(`https://www.thecolorapi.com/scheme?hex=${color}&mode=${scheme}&count=2`)
       .then(response => response.json())
-      .then(data => returnColors(data))
+      .then(data => {
+        console.log(data);
+        const {colors} = data
+        spotLight2.color = new THREE.Color(colors[0].hex.value)
+        spotLight3.color = new THREE.Color(colors[1].hex.value)
+      })
 }
 
 /**
