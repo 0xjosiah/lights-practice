@@ -42,7 +42,7 @@ let colorObj = {
  */
 const ambientLight = new THREE.AmbientLight({
   color: 0xffffff,
-  intensity: .4
+  intensity: .2
 })
 // scene.add(ambientLight)
 
@@ -129,13 +129,13 @@ scene.add(spotLight3.target)
 // updateHelper(spotLightHelper3)
 // scene.add(spotLightHelper3.help)
 
-// Horizon Light
-const horizon = new THREE.HemisphereLight(0x000000, 0xffffff, 5)
-// scene.add(horizon)
-horizon.position.y = .0001
-horizon.position.x = 0
-const horizonHelper = new THREE.HemisphereLightHelper(horizon)
-// scene.add(horizonHelper)
+// Point Light
+const pointLight = new THREE.PointLight(spotLight.color, 5, 2, .5)
+pointLight.position.y = -1.5
+console.log(spotLight.color);
+scene.add(pointLight)
+const pointLightHelper = new THREE.PointLightHelper(pointLight)
+scene.add(pointLightHelper)
 
 /**
  * Objects
@@ -166,7 +166,8 @@ floor.receiveShadow = true
 
 const room = new THREE.Mesh(
   // new THREE.BoxGeometry(20, 20, 20),
-  new THREE.SphereGeometry(10),
+  // new THREE.SphereGeometry(10),
+  new THREE.OctahedronGeometry(10),
   // new THREE.MeshPhongMaterial({ color: 0xaaaaaa, side: THREE.DoubleSide })
   material
 )
@@ -183,7 +184,7 @@ octo.castShadow = true
 // const floorFolder = gui.addFolder('Floor')
 // floorFolder.add(floor.material, 'metalness', 0, 1, .001)
 
-scene.add(sphere, room)
+scene.add(octo, room)
 
 
 /**
