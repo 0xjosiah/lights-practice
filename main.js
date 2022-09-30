@@ -144,7 +144,7 @@ const horizonHelper = new THREE.HemisphereLightHelper(horizon)
 const material = new THREE.MeshStandardMaterial()
 material.roughness = .4
 material.metalness = .8
-const materialFolder = gui.addFolder('Sphere')
+const materialFolder = gui.addFolder('Material')
 materialFolder.add(material, 'roughness', 0, 1, .001)
 materialFolder.add(material, 'metalness', 0, 1, .001)
 
@@ -187,9 +187,9 @@ scene.add(octo, floor)
  */
 // Fetch Colors
 
-
-gui.add(colorObj, 'scheme', ['monochrome', 'monochrome-dark', 'monochrome-light', 'analogic', 'complement', 'analogic-complement', 'triad', 'quad'])
-gui.addColor(colorObj, 'color').onChange(v => {
+const colorFolder = gui.addFolder('Select Color')
+colorFolder.add(colorObj, 'scheme', ['monochrome', 'monochrome-dark', 'monochrome-light', 'analogic', 'complement', 'analogic-complement', 'triad', 'quad'])
+colorFolder.addColor(colorObj, 'color').onChange(v => {
   colorObj.color = v
   spotLight.color = new THREE.Color(colorObj.color)
 
