@@ -39,7 +39,7 @@ const ambientLight = new THREE.AmbientLight({
   color: 0xffffff,
   intensity: .4
 })
-scene.add(ambientLight)
+// scene.add(ambientLight)
 
 // Helper Functions
 const addHelperToGui = (value, helperObj) => {
@@ -54,7 +54,9 @@ const updateHelper = helper => {
 
 // Spot Lights
 const spotLight = new THREE.SpotLight(0xffffff, .5, 10, Math.PI * .1, .05, 1)
-spotLight.position.y = 2
+spotLight.position.x = 0
+spotLight.position.y = 5
+spotLight.position.z = 2.5
 scene.add(spotLight)
 scene.add(spotLight.target)
 const spotLightFolder = gui.addFolder('Spot 1')
@@ -76,9 +78,9 @@ updateHelper(spotLightHelper)
 scene.add(spotLightHelper.help)
 
 const spotLight2 = new THREE.SpotLight(0xffffff, .5, 10, Math.PI * .1, .05, 1)
-spotLight2.position.x = 1
-spotLight2.position.y = 2
-spotLight2.position.z = 0
+spotLight2.position.x = 1.8
+spotLight2.position.y = 5
+spotLight2.position.z = -1.8
 scene.add(spotLight2)
 scene.add(spotLight2.target)
 const spotLightFolder2 = gui.addFolder('Spot 2')
@@ -99,9 +101,9 @@ spotLightFolder2.add(spotLightHelper2, 'helper').onChange(v => addHelperToGui(v,
 scene.add(spotLightHelper2.help)
 
 const spotLight3 = new THREE.SpotLight(0xffffff, .5, 10, Math.PI * .1, .05, 1)
-spotLight3.position.x = -1
-spotLight3.position.y = 2
-spotLight3.position.z = 0
+spotLight3.position.x = -1.8
+spotLight3.position.y = 5
+spotLight3.position.z = -1.8
 scene.add(spotLight3)
 scene.add(spotLight3.target)
 const spotLightFolder3 = gui.addFolder('Spot 3')
@@ -142,16 +144,29 @@ sphere.castShadow = true
 sphere.receiveShadow = true
 
 const floor = new THREE.Mesh(
-  new THREE.PlaneGeometry(10, 10),
-  new THREE.MeshPhongMaterial({ color: 0xaaaaaa })
+  new THREE.PlaneGeometry(20, 20),
+  material// new THREE.MeshPhongMaterial({ color: 0xffffff })
 )
 floor.rotation.x = - Math.PI * .5
-floor.position.y = -.75
+floor.position.y = -1
 floor.receiveShadow = true
-const floorFolder = gui.addFolder('Floor')
+
+const room = new THREE.Mesh(
+  new THREE.BoxGeometry(10, 10, 10),
+  new THREE.MeshPhongMaterial({ color: 0xaaaaaa, side: THREE.DoubleSide })
+)
+
+const octo = new THREE.Mesh(
+  new THREE.OctahedronGeometry(),
+  material
+)
+octo.castShadow = true
+
+
+// const floorFolder = gui.addFolder('Floor')
 // floorFolder.add(floor.material, 'metalness', 0, 1, .001)
 
-scene.add(sphere, floor)
+scene.add(octo, floor)
 
 /**
  * Sizes
