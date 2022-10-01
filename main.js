@@ -151,7 +151,7 @@ materialFolder.add(material, 'metalness', 0, 1, .001)
 
 // Object
 const sphere = new THREE.Mesh(
-  new THREE.SphereGeometry(.5, 32, 32),
+  new THREE.SphereGeometry(1, 32, 32),
   material
 )
 sphere.castShadow = true
@@ -182,6 +182,11 @@ const octo = new THREE.Mesh(
 )
 octo.castShadow = true
 // octo.receiveShadow = true
+
+const torusKnot = new THREE.Mesh(
+  new THREE.TorusKnotGeometry(1, .3, 300, 200, 5, 15), 
+  material
+)
 
 
 // const floorFolder = gui.addFolder('Floor')
@@ -222,6 +227,24 @@ function fetchColorData(colorObj) {
         spotLight3.color = new THREE.Color(colors[1].hex.value)
       })
 }
+
+//Change Object shape
+let centerObj = {
+  shape: octo,
+  shapes: {
+    octahedron: octo,
+    sphere: sphere,
+    torus_knot: torusKnot
+  }
+}
+
+const centerObjFolder = gui.addFolder('Select Shape')
+console.log(centerObj.shape);
+centerObjFolder.add(centerObj, 'shape', centerObj.shapes).onChange(v => {
+  scene.remove(centerObj.shape)
+  // scene.add(v)
+  // centerObj.shape = v
+})
 
 /**
  * Sizes
