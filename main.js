@@ -237,6 +237,7 @@ let centerObj = {
     torus_knot: torusKnot
   }
 }
+console.log(centerObj);
 
 const centerObjFolder = gui.addFolder('Select Shape')
 console.log(centerObj.shape);
