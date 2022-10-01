@@ -58,7 +58,7 @@ const updateHelper = helper => {
 }
 
 // Spot Lights
-const spotLight = new THREE.SpotLight(0xff0000, 1.5, 10, Math.PI * .2, .5, 0)
+const spotLight = new THREE.SpotLight(0xff0000, 1, 10, Math.PI * .3, .5, 0)
 spotLight.position.x = 0
 spotLight.position.y = 5
 spotLight.position.z = 2.5
@@ -74,15 +74,15 @@ scene.add(spotLight.target)
 // spotLightFolder.add(spotLight.position, 'x', -5, 5, .25).onChange(() => updateHelper(spotLightHelper))
 // spotLightFolder.add(spotLight.position, 'y', -5, 5, .25).onChange(() => updateHelper(spotLightHelper))
 // spotLightFolder.add(spotLight.position, 'z', -5, 5, .25).onChange(() => updateHelper(spotLightHelper))
-// const spotLightHelper = {
-//   help: new THREE.SpotLightHelper(spotLight),
-//   helper: false
-// }
+const spotLightHelper = {
+  help: new THREE.SpotLightHelper(spotLight),
+  helper: false
+}
 // spotLightFolder.add(spotLightHelper, 'helper').onChange(v => addHelperToGui(v, spotLightHelper))
 // updateHelper(spotLightHelper)
 // scene.add(spotLightHelper.help)
 
-const spotLight2 = new THREE.SpotLight(0x00ff00, 1.5, 10, Math.PI * .2, .5, 0)
+const spotLight2 = new THREE.SpotLight(0x00ff00, 1, 10, Math.PI * .3, .5, 0)
 spotLight2.position.x = 1.8
 spotLight2.position.y = 5
 spotLight2.position.z = -1.8
@@ -98,14 +98,14 @@ scene.add(spotLight2.target)
 // spotLightFolder2.add(spotLight2.position, 'x', -5, 5, .25).onChange(() => updateHelper(spotLightHelper2))
 // spotLightFolder2.add(spotLight2.position, 'y', -5, 5, .25).onChange(() => updateHelper(spotLightHelper2))
 // spotLightFolder2.add(spotLight2.position, 'z', -5, 5, .25).onChange(() => updateHelper(spotLightHelper2))
-// const spotLightHelper2 = {
-//   help: new THREE.SpotLightHelper(spotLight2),
-//   helper: false
-// }
+const spotLightHelper2 = {
+  help: new THREE.SpotLightHelper(spotLight2),
+  helper: false
+}
 // spotLightFolder2.add(spotLightHelper2, 'helper').onChange(v => addHelperToGui(v, spotLightHelper2))
 // scene.add(spotLightHelper2.help)
 
-const spotLight3 = new THREE.SpotLight(0x0000ff, 1.5, 10, Math.PI * .2, .5, 0)
+const spotLight3 = new THREE.SpotLight(0x0000ff, 1, 10, Math.PI * .3, .5, 0)
 spotLight3.position.x = -1.8
 spotLight3.position.y = 5
 spotLight3.position.z = -1.8
@@ -121,21 +121,27 @@ scene.add(spotLight3.target)
 // spotLightFolder3.add(spotLight3.position, 'x', -5, 5, .25).onChange(() => updateHelper(spotLightHelper3))
 // spotLightFolder3.add(spotLight3.position, 'y', -5, 5, .25).onChange(() => updateHelper(spotLightHelper3))
 // spotLightFolder3.add(spotLight3.position, 'z', -5, 5, .25).onChange(() => updateHelper(spotLightHelper3))
-// const spotLightHelper3 = {
-//   help: new THREE.SpotLightHelper(spotLight3),
-//   helper: false
-// }
+const spotLightHelper3 = {
+  help: new THREE.SpotLightHelper(spotLight3),
+  helper: false
+}
 // spotLightFolder3.add(spotLightHelper3, 'helper').onChange(v => addHelperToGui(v, spotLightHelper3))
 // updateHelper(spotLightHelper3)
 // scene.add(spotLightHelper3.help)
 
-// Point Light
-const pointLight = new THREE.PointLight(spotLight.color, 5, 2, .5)
-pointLight.position.y = -1.5
-console.log(spotLight.color);
-scene.add(pointLight)
-const pointLightHelper = new THREE.PointLightHelper(pointLight)
-scene.add(pointLightHelper)
+// Bottom Spot Light
+const bottomSpot = new THREE.SpotLight(0xffffff, 1, 5, Math.PI * .3, 0.5, .5)
+bottomSpot.castShadow = true
+bottomSpot.position.y = -1.75
+scene.add(bottomSpot)
+scene.add(bottomSpot.target)
+// scene.add(new THREE.SpotLightHelper(bottomSpot))
+// bottomSpot.shadow.mapSize.width = 1024
+// bottomSpot.shadow.mapSize.height = 1024
+// bottomSpot.shadow.camera.fov = 30
+// bottomSpot.shadow.camera.near = 1
+// bottomSpot.shadow.camera.far = 5
+// scene.add(new THREE.CameraHelper(bottomSpot.shadow.camera))
 
 /**
  * Objects
@@ -166,19 +172,21 @@ floor.receiveShadow = true
 
 const room = new THREE.Mesh(
   // new THREE.BoxGeometry(20, 20, 20),
-  // new THREE.SphereGeometry(10),
-  new THREE.OctahedronGeometry(10),
+  new THREE.SphereGeometry(10),
+  // new THREE.OctahedronGeometry(15),
   // new THREE.MeshPhongMaterial({ color: 0xaaaaaa, side: THREE.DoubleSide })
   material
 )
 room.material.side = THREE.DoubleSide
 room.receiveShadow = true
+// room.castShadow = true
 
 const octo = new THREE.Mesh(
   new THREE.OctahedronGeometry(),
   material
 )
 octo.castShadow = true
+// octo.receiveShadow = true
 
 
 // const floorFolder = gui.addFolder('Floor')
@@ -278,6 +286,22 @@ const tick = () => {
   const elapsedTime = clock.getElapsedTime()
 
   // Update objects
+  // octo.rotation.y = elapsedTime * .5
+  // octo.rotation.z = elapsedTime * .5
+
+  // // Update Spots
+  // spotLight.position.y = Math.sin(elapsedTime) * 1.5
+  // spotLight.position.z = Math.cos(elapsedTime) * 1.5
+  // // spotLight.intensity = Math.abs(Math.sin(elapsedTime)) + .5
+  // // spotLight.position.z = Math.sin(elapsedTime) * 1.5
+  // spotLight2.position.y = Math.sin(elapsedTime) * 1.5 + .25
+  // spotLight2.position.z = Math.cos(elapsedTime) * 1.5 + .25
+  // // spotLight2.intensity = Math.abs(Math.sin(elapsedTime)) + 1
+  // // spotLight2.position.z = Math.sin(elapsedTime) * 1.5
+  // spotLight3.position.y = Math.sin(elapsedTime) * 1.5 + .5
+  // spotLight3.position.z = Math.cos(elapsedTime) * 1.5 + .5
+  // // spotLight3.intensity = Math.abs(Math.sin(elapsedTime)) + 1.5
+  // // spotLight3.position.z = Math.sin(elapsedTime) * 1.5
 
   // Update controls
   controls.update()
