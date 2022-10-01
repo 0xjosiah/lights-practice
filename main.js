@@ -32,11 +32,6 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 
-let colorObj = {
-  scheme: 'monochrome',
-  color: 0xff0000
-}
-
 /**
  * Lights
  */
@@ -199,21 +194,21 @@ scene.add(octo, room)
  * Fetch Colors GUI and logic
  */
 // Fetch Colors
+let colorObj = {
+  scheme: 'monochrome',
+  color: 0xff0000
+}
 
 const colorFolder = gui.addFolder('Select Color')
 colorFolder.add(colorObj, 'scheme', ['monochrome', 'monochrome-dark', 'monochrome-light', 'analogic', 'complement', 'analogic-complement', 'triad', 'quad'])
   .onChange(v => {
     colorObj.scheme = v
     fetchColorData(colorObj)
-    console.log(colorObj);
-    console.log(spotLight2.color, spotLight3.color);
   });
 colorFolder.addColor(colorObj, 'color').onChange(v => {
   colorObj.color = v
   spotLight.color = new THREE.Color(colorObj.color)
   fetchColorData(colorObj)
-  console.log(colorObj);
-  console.log(spotLight2.color, spotLight3.color);
 })
 
 function fetchColorData(colorObj) {
@@ -222,7 +217,6 @@ function fetchColorData(colorObj) {
   fetch(`https://www.thecolorapi.com/scheme?hex=${color}&mode=${scheme}&count=2`)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         const {colors} = data
         spotLight2.color = new THREE.Color(colors[0].hex.value)
         spotLight3.color = new THREE.Color(colors[1].hex.value)
