@@ -157,13 +157,6 @@ const sphere = new THREE.Mesh(
 sphere.castShadow = true
 sphere.receiveShadow = true
 
-const floor = new THREE.Mesh(
-  new THREE.PlaneGeometry(20, 20),
-  material// new THREE.MeshPhongMaterial({ color: 0xffffff })
-)
-floor.rotation.x = - Math.PI * .5
-floor.position.y = -1.5
-floor.receiveShadow = true
 
 const room = new THREE.Mesh(
   // new THREE.BoxGeometry(20, 20, 20),
@@ -188,7 +181,12 @@ const torusKnot = new THREE.Mesh(
   material
 )
 
-
+// const mesh = new THREE.Mesh(
+//   octo,
+//   material
+// )
+// mesh.castShadow = true
+// mesh.receiveShadow = true
 // const floorFolder = gui.addFolder('Floor')
 // floorFolder.add(floor.material, 'metalness', 0, 1, .001)
 
