@@ -61,13 +61,13 @@ scene.add(spotLight3.target)
 const bottomSpot = new THREE.SpotLight(0xffffff, 1, 5, Math.PI * .6, 0.75, .5)
 bottomSpot.castShadow = true
 bottomSpot.position.y = -2
-scene.add(bottomSpot)
-scene.add(bottomSpot.target)
 bottomSpot.shadow.mapSize.width = 1024
 bottomSpot.shadow.mapSize.height = 1024
 bottomSpot.shadow.camera.fov = 50
 bottomSpot.shadow.camera.near = .5
 bottomSpot.shadow.camera.far = 5
+scene.add(bottomSpot)
+scene.add(bottomSpot.target)
 
 /**
  * Objects
@@ -76,6 +76,7 @@ bottomSpot.shadow.camera.far = 5
 const material = new THREE.MeshStandardMaterial()
 material.roughness = .4
 material.metalness = .8
+
 const materialFolder = gui.addFolder('Adjust Material')
 materialFolder.add(material, 'roughness', 0, 1, .001)
 materialFolder.add(material, 'metalness', 0, 1, .001)
@@ -138,7 +139,7 @@ function fetchColorData(colorObj) {
       })
 }
 
-//Change Object shape
+// Change Object shape
 let centerObj = {
   shape: octahedron,
   shapes: {
