@@ -83,6 +83,7 @@ spotLight2.position.y = 5
 spotLight2.position.z = -1.8
 scene.add(spotLight2)
 scene.add(spotLight2.target)
+// scene.add(new THREE.CameraHelper(spotLight2.shadow.camera))
 // const spotLightFolder2 = gui.addFolder('Spot 2')
 // spotLightFolder2.add(spotLight2, 'intensity', 0, 1, .001).onChange(() => updateHelper(spotLightHelper2))
 // spotLightFolder2.add(spotLight2, 'distance', 1, 20, 1).onChange(() => updateHelper(spotLightHelper2))
@@ -106,6 +107,7 @@ spotLight3.position.y = 5
 spotLight3.position.z = -1.8
 scene.add(spotLight3)
 scene.add(spotLight3.target)
+// scene.add(new THREE.CameraHelper(spotLight3.shadow.camera))
 // const spotLightFolder3 = gui.addFolder('Spot 3')
 // spotLightFolder3.add(spotLight3, 'intensity', 0, 1, .001).onChange(() => updateHelper(spotLightHelper3))
 // spotLightFolder3.add(spotLight3, 'distance', 0, 100, 1).onChange(() => updateHelper(spotLightHelper3))
@@ -125,17 +127,17 @@ const spotLightHelper3 = {
 // scene.add(spotLightHelper3.help)
 
 // Bottom Spot Light
-const bottomSpot = new THREE.SpotLight(0xffffff, 1, 5, Math.PI * .3, 0.5, .5)
+const bottomSpot = new THREE.SpotLight(0xffffff, 1, 5, Math.PI * .6, 0.75, .5)
 bottomSpot.castShadow = true
-bottomSpot.position.y = -1.75
+bottomSpot.position.y = -2
 scene.add(bottomSpot)
 scene.add(bottomSpot.target)
 // scene.add(new THREE.SpotLightHelper(bottomSpot))
-// bottomSpot.shadow.mapSize.width = 1024
-// bottomSpot.shadow.mapSize.height = 1024
-// bottomSpot.shadow.camera.fov = 30
-// bottomSpot.shadow.camera.near = 1
-// bottomSpot.shadow.camera.far = 5
+bottomSpot.shadow.mapSize.width = 1024
+bottomSpot.shadow.mapSize.height = 1024
+bottomSpot.shadow.camera.fov = 50
+bottomSpot.shadow.camera.near = .5
+bottomSpot.shadow.camera.far = 5
 // scene.add(new THREE.CameraHelper(bottomSpot.shadow.camera))
 
 /**
@@ -163,19 +165,17 @@ room.castShadow = true
 
 // Objects in scene
 // Geometries
-const sphere = new THREE.SphereGeometry(1, 32, 32);
+const sphere = new THREE.SphereGeometry(1, 64, 64);
 const octo = new THREE.OctahedronGeometry();
-const torusKnot = new THREE.TorusKnotGeometry(1, .3, 300, 200, 5, 15);
+const torusKnot = new THREE.TorusKnotGeometry(1, .3, 300, 200, 2, 3);
+const dodeca = new THREE.DodecahedronGeometry()
+const pill = new THREE.CapsuleGeometry(.75, 1, 64, 64)
+const cube = new THREE.BoxGeometry()
 
 // Mesh
-const mesh = new THREE.Mesh(
-  octo,
-  material
-)
+const mesh = new THREE.Mesh( octo, material )
 mesh.castShadow = true
-mesh.receiveShadow = true
-// const floorFolder = gui.addFolder('Floor')
-// floorFolder.add(floor.material, 'metalness', 0, 1, .001)
+// mesh.receiveShadow = true
 
 scene.add(mesh, room)
 
@@ -219,7 +219,10 @@ let centerObj = {
   shapes: {
     octahedron: octo,
     sphere: sphere,
-    torus_knot: torusKnot
+    torus_knot: torusKnot,
+    dodecahedron: dodeca,
+    capsule: pill,
+    cube
   }
 }
 console.log(centerObj);
@@ -227,9 +230,8 @@ console.log(centerObj);
 const centerObjFolder = gui.addFolder('Select Shape')
 console.log(centerObj.shape);
 centerObjFolder.add(centerObj, 'shape', centerObj.shapes).onChange(v => {
-  scene.remove(centerObj.shape)
-  // scene.add(v)
-  // centerObj.shape = v
+  centerObj.shape = v
+  mesh.geometry = centerObj.shape
 })
 
 /**
