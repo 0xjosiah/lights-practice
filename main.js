@@ -9,7 +9,6 @@ import * as dat from 'lil-gui'
 // Debug GUI
 const gui = new dat.GUI()
 gui.add(gui, 'reset')
-console.log(gui)
 
 let preset = {}
 const settingsObj = {
