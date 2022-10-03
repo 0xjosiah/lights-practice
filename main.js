@@ -149,15 +149,7 @@ const materialFolder = gui.addFolder('Material')
 materialFolder.add(material, 'roughness', 0, 1, .001)
 materialFolder.add(material, 'metalness', 0, 1, .001)
 
-// Object
-const sphere = new THREE.Mesh(
-  new THREE.SphereGeometry(1, 32, 32),
-  material
-)
-sphere.castShadow = true
-sphere.receiveShadow = true
-
-
+// Container or 'room'
 const room = new THREE.Mesh(
   // new THREE.BoxGeometry(20, 20, 20),
   new THREE.SphereGeometry(10),
@@ -167,30 +159,25 @@ const room = new THREE.Mesh(
 )
 room.material.side = THREE.DoubleSide
 room.receiveShadow = true
-// room.castShadow = true
+room.castShadow = true
 
-const octo = new THREE.Mesh(
-  new THREE.OctahedronGeometry(),
+// Objects in scene
+// Geometries
+const sphere = new THREE.SphereGeometry(1, 32, 32);
+const octo = new THREE.OctahedronGeometry();
+const torusKnot = new THREE.TorusKnotGeometry(1, .3, 300, 200, 5, 15);
+
+// Mesh
+const mesh = new THREE.Mesh(
+  octo,
   material
 )
-octo.castShadow = true
-// octo.receiveShadow = true
-
-const torusKnot = new THREE.Mesh(
-  new THREE.TorusKnotGeometry(1, .3, 300, 200, 5, 15), 
-  material
-)
-
-// const mesh = new THREE.Mesh(
-//   octo,
-//   material
-// )
-// mesh.castShadow = true
-// mesh.receiveShadow = true
+mesh.castShadow = true
+mesh.receiveShadow = true
 // const floorFolder = gui.addFolder('Floor')
 // floorFolder.add(floor.material, 'metalness', 0, 1, .001)
 
-scene.add(octo, room)
+scene.add(mesh, room)
 
 
 /**
