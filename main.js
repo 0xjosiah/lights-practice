@@ -10,12 +10,14 @@ import * as dat from 'lil-gui'
 const gui = new dat.GUI()
 
 
-let mySaves = {}
+let mySaves = {
+  previous: {}
+}
 let preset = {}
-const saveToMySaves = (obj, presetObj) => {
+const addToMySaves = (obj, presetObj) => {
   const {value} = obj
   return {
-    ...mySaves,
+    ...mySaves.previous,
     [value]: presetObj
   }
 }
@@ -24,7 +26,7 @@ const settingsObj = {
   value: '',
   savePreset() {
     preset = gui.save();
-    mySaves = saveToMySaves(settingsObj, preset);
+    mySaves.previous = addToMySaves(settingsObj, preset);
     console.log(mySaves);
     loadButton.enable();
   },
@@ -37,7 +39,9 @@ presetsFolder.add(settingsObj, 'value')
 presetsFolder.add(settingsObj, 'savePreset')
 const loadButton = presetsFolder.add( settingsObj, 'loadPreset' ).disable();
 
-presetsFolder.add(mySaves, {...mySaves})
+let mySaveOptions = presetsFolder.add(mySaves, 'previous', {...mySaves.previous})
+
+// gui.onChange(() =>)
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
