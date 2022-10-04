@@ -3,47 +3,53 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as dat from 'lil-gui'
 
+const guiContainer = document.querySelector("#gui")
+
 /**
  * Base
  */
 // Debug GUI
-const gui = new dat.GUI()
+const gui = new dat.GUI( { container: guiContainer } )
 
-let mySaves = {
-  presets: {}
+// let mySaves = {
+//   presets: {}
+// }
+
+// let preset = {}
+
+const addToMySaves = (obj, preset) => {
+  const {value, mySaves} = obj
+  return {
+    ...mySaves,
+    [value]: preset
+  }
 }
 
-let preset = {}
-
-const addToMySaves = (obj, presetObj) => {
-  const {value} = obj
-  return {
-    ...mySaves.presets,
-    [value]: presetObj
-  }
+const updatePrevs = () => {
+  prevs = presetsFolder.add(settingsObj, 'mySaves', settingsObj.mySaves).show()
 }
 
 const settingsObj = {
   value: '',
   savePreset() {
-    preset = gui.save();
-    mySaves.presets = addToMySaves(settingsObj, preset);
     prevs.destroy()
-    prevs = presetsFolder.add(mySaves, 'presets', mySaves.presets).show()
+    let preset = gui.save();
+    console.log(preset)
+    settingsObj.mySaves = addToMySaves(settingsObj, preset);
+    updatePrevs()
     loadButton.enable().show()
-    console.log(mySaves);
+    console.log(settingsObj.mySaves)
   },
   loadPreset() {
     gui.load( preset );
-  }
+  },
+  mySaves: {}
 }
 const presetsFolder = gui.addFolder("Saves")
 presetsFolder.add(settingsObj, 'value')
 presetsFolder.add(settingsObj, 'savePreset')
 
-let prevs = presetsFolder.add(mySaves, 'presets', mySaves.presets).hide().onChange((v) => {
-  // loadButton.enable().show()
-})
+let prevs = presetsFolder.add(settingsObj, 'mySaves', settingsObj.mySaves).hide()
 const loadButton = presetsFolder.add( settingsObj, 'loadPreset' ).disable().hide()
 
 // Canvas
