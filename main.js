@@ -9,15 +9,16 @@ import * as dat from 'lil-gui'
 // Debug GUI
 const gui = new dat.GUI()
 
-
 let mySaves = {
-  previous: {}
+  presets: {}
 }
+
 let preset = {}
+
 const addToMySaves = (obj, presetObj) => {
   const {value} = obj
   return {
-    ...mySaves.previous,
+    ...mySaves.presets,
     [value]: presetObj
   }
 }
@@ -26,9 +27,11 @@ const settingsObj = {
   value: '',
   savePreset() {
     preset = gui.save();
-    mySaves.previous = addToMySaves(settingsObj, preset);
+    mySaves.presets = addToMySaves(settingsObj, preset);
+    prevs.destroy()
+    prevs = presetsFolder.add(mySaves, 'presets', mySaves.presets).show()
+    loadButton.enable().show()
     console.log(mySaves);
-    loadButton.enable();
   },
   loadPreset() {
     gui.load( preset );
@@ -37,11 +40,11 @@ const settingsObj = {
 const presetsFolder = gui.addFolder("Saves")
 presetsFolder.add(settingsObj, 'value')
 presetsFolder.add(settingsObj, 'savePreset')
-const loadButton = presetsFolder.add( settingsObj, 'loadPreset' ).disable();
 
-let mySaveOptions = presetsFolder.add(mySaves, 'previous', {...mySaves.previous})
-
-// gui.onChange(() =>)
+let prevs = presetsFolder.add(mySaves, 'presets', mySaves.presets).hide().onChange((v) => {
+  // loadButton.enable().show()
+})
+const loadButton = presetsFolder.add( settingsObj, 'loadPreset' ).disable().hide()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
