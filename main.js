@@ -8,22 +8,36 @@ import * as dat from 'lil-gui'
  */
 // Debug GUI
 const gui = new dat.GUI()
-gui.add(gui, 'reset')
 
+
+let mySaves = {}
 let preset = {}
+const saveToMySaves = (obj, presetObj) => {
+  const {value} = obj
+  return {
+    ...mySaves,
+    [value]: presetObj
+  }
+}
+
 const settingsObj = {
   value: '',
   savePreset() {
     preset = gui.save();
+    mySaves = saveToMySaves(settingsObj, preset);
+    console.log(mySaves);
     loadButton.enable();
   },
   loadPreset() {
     gui.load( preset );
   }
 }
-gui.add(settingsObj, 'value')
-gui.add(settingsObj, 'savePreset')
-const loadButton = gui.add( settingsObj, 'loadPreset' ).disable();
+const presetsFolder = gui.addFolder("Saves")
+presetsFolder.add(settingsObj, 'value')
+presetsFolder.add(settingsObj, 'savePreset')
+const loadButton = presetsFolder.add( settingsObj, 'loadPreset' ).disable();
+
+presetsFolder.add(mySaves, {...mySaves})
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -223,5 +237,7 @@ const tick = () => {
   // call tick again on next frame
   window.requestAnimationFrame(tick)
 }
+
+gui.add(gui, 'reset')
 
 tick()
