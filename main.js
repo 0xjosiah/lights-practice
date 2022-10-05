@@ -9,7 +9,7 @@ const savedPresetsSelector = document.querySelector("#saves")
 /**
  * Base
  */
-// Debug GUI
+// GUI
 const gui = new dat.GUI( { container: guiContainer } )
 gui.onChange(event => {
   if(event.controller.property !== 'saveName') {
@@ -18,16 +18,34 @@ gui.onChange(event => {
   }
 })
 
-const addToMySaves = (obj, preset) => {
-  const {saveName, mySaves} = obj
-  settingsObj.mySaves = [
-    ...mySaves,
-    {
-      saveName: saveName,
-      data: preset
-    }
-  ]
 
+const fetchSaves = () => {
+  const saves = window.localStorage.getItem('savedPresets')
+  settingsObj.mySaves = JSON.parse(saves)
+  console.log(settingsObj.mySaves);
+  if(settingsObj.mySaves) {
+    displaySaves()
+    loadButton.enable().show()
+  }
+}
+
+const addToMySaves = (preset) => {
+  // let {saveName, mySaves} = obj
+  if(!settingsObj.mySaves) {
+    settingsObj.mySaves = [{
+      saveName: settingsObj.saveName,
+      data: preset
+    }]
+  } else {
+    settingsObj.mySaves.push(
+      {
+        saveName: settingsObj.saveName,
+        data: preset
+      }
+    )
+  }
+  const savesJSON = JSON.stringify(settingsObj.mySaves)
+  window.localStorage.setItem('savedPresets', savesJSON)
 }
 
 const displaySaves = () => {
@@ -44,7 +62,6 @@ const settingsObj = {
     let preset = gui.save();
     addToMySaves(settingsObj, preset);
     displaySaves()
-    loadButton.enable().show()
   },
   loadPreset() {
     const {value} = savedPresetsSelector
@@ -56,8 +73,11 @@ const settingsObj = {
 
 const saveNameGui = gui.add(settingsObj, 'saveName')
 const savePreset = gui.add(settingsObj, 'savePreset')
-
 const loadButton = gui.add( settingsObj, 'loadPreset' ).disable()
+
+window.onload = () => {
+  if(settingsObj.mySaves) fetchSaves()
+}
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
