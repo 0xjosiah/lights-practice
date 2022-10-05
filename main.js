@@ -62,8 +62,9 @@ const settingsObj = {
   saveName: '',
   savePreset() {
     let preset = gui.save();
-    addToMySaves(settingsObj, preset);
-    displaySaves()
+    addToMySaves(preset);
+    sendSavesToLocalStorage();
+    displaySaves();
   },
   loadPreset() {
     const {value} = savedPresetsSelector
