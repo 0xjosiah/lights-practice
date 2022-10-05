@@ -22,7 +22,6 @@ gui.onChange(event => {
 const fetchSaves = () => {
   const saves = window.localStorage.getItem('savedPresets')
   settingsObj.mySaves = JSON.parse(saves)
-  console.log(settingsObj.mySaves);
   if(settingsObj.mySaves) {
     displaySaves()
     loadButton.enable().show()
@@ -30,20 +29,23 @@ const fetchSaves = () => {
 }
 
 const addToMySaves = (preset) => {
-  // let {saveName, mySaves} = obj
-  if(!settingsObj.mySaves) {
-    settingsObj.mySaves = [{
-      saveName: settingsObj.saveName,
+  let {saveName, mySaves} = obj
+  if(!mySaves) {
+    mySaves = [{
+      saveName: saveName,
       data: preset
     }]
   } else {
-    settingsObj.mySaves.push(
+    mySaves.push(
       {
-        saveName: settingsObj.saveName,
+        saveName: saveName,
         data: preset
       }
     )
   }
+}
+
+const sendSavesToLocalStorage = () => {
   const savesJSON = JSON.stringify(settingsObj.mySaves)
   window.localStorage.setItem('savedPresets', savesJSON)
 }
