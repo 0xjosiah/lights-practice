@@ -20,13 +20,14 @@ gui.onChange(event => {
 
 const addToMySaves = (obj, preset) => {
   const {saveName, mySaves} = obj
-  return [
+  settingsObj.mySaves = [
     ...mySaves,
     {
       saveName: saveName,
       data: preset
     }
   ]
+
 }
 
 const displaySaves = () => {
@@ -41,10 +42,9 @@ const settingsObj = {
   saveName: '',
   savePreset() {
     let preset = gui.save();
-    settingsObj.mySaves = addToMySaves(settingsObj, preset);
+    addToMySaves(settingsObj, preset);
     displaySaves()
     loadButton.enable().show()
-    settingsObj.saveName = ''
   },
   loadPreset() {
     const {value} = savedPresetsSelector
