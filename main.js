@@ -4,53 +4,60 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as dat from 'lil-gui'
 
 const guiContainer = document.querySelector("#gui")
+const savedPresetsSelector = document.querySelector("#saves")
 
 /**
  * Base
  */
 // Debug GUI
 const gui = new dat.GUI( { container: guiContainer } )
-
-// let mySaves = {
-//   presets: {}
-// }
-
-// let preset = {}
+gui.onChange(event => {
+  if(event.controller.property !== 'saveName') {
+    settingsObj.saveName = ''
+    saveNameGui.updateDisplay()
+  }
+})
 
 const addToMySaves = (obj, preset) => {
-  const {value, mySaves} = obj
-  return {
+  const {saveName, mySaves} = obj
+  return [
     ...mySaves,
-    [value]: preset
-  }
+    {
+      saveName: saveName,
+      data: preset
+    }
+  ]
 }
 
-const updatePrevs = () => {
-  prevs = presetsFolder.add(settingsObj, 'mySaves', settingsObj.mySaves).show()
+const displaySaves = () => {
+  const {mySaves} = settingsObj
+  const savesElements = mySaves.map(i => (
+    `<option value="${i.saveName}">${i.saveName}</option>`
+  ))
+  savedPresetsSelector.innerHTML = savesElements
 }
 
 const settingsObj = {
-  value: '',
+  saveName: '',
   savePreset() {
-    prevs.destroy()
     let preset = gui.save();
-    console.log(preset)
     settingsObj.mySaves = addToMySaves(settingsObj, preset);
-    updatePrevs()
+    displaySaves()
     loadButton.enable().show()
-    console.log(settingsObj.mySaves)
+    settingsObj.saveName = ''
   },
   loadPreset() {
-    gui.load( preset );
+    const {value} = savedPresetsSelector
+    const save = settingsObj.mySaves.find(i => i.saveName === value)
+    gui.load( save.data );
   },
-  mySaves: {}
+  mySaves: []
 }
-const presetsFolder = gui.addFolder("Saves")
-presetsFolder.add(settingsObj, 'value')
-presetsFolder.add(settingsObj, 'savePreset')
 
-let prevs = presetsFolder.add(settingsObj, 'mySaves', settingsObj.mySaves)
-const loadButton = presetsFolder.add( settingsObj, 'loadPreset' ).disable()
+const saveNameGui = gui.add(settingsObj, 'saveName')
+const savePreset = gui.add(settingsObj, 'savePreset')
+
+const loadButton = gui.add( settingsObj, 'loadPreset' ).disable()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
