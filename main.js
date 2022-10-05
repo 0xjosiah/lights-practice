@@ -11,78 +11,79 @@ const savedPresetsSelector = document.querySelector("#saves")
  */
 // GUI
 const gui = new dat.GUI( { container: guiContainer } )
-gui.onChange(event => {
-  if(event.controller.property !== 'saveName') {
-    settingsObj.saveName = ''
-    saveNameGui.updateDisplay()
-  }
-})
+// TODO
+// gui.onChange(event => {
+//   if(event.controller.property !== 'saveName') {
+//     settingsObj.saveName = ''
+//     saveNameGui.updateDisplay()
+//   }
+// })
 
 
-const fetchSaves = () => {
-  const saves = window.localStorage.getItem('savedPresets')
-  settingsObj.mySaves = JSON.parse(saves)
-}
+// const fetchSaves = () => {
+//   const saves = window.localStorage.getItem('savedPresets')
+//   settingsObj.mySaves = JSON.parse(saves)
+// }
 
-const addToMySaves = (preset) => {
-  if(!settingsObj.mySaves) {
-    settingsObj.mySaves = [{
-      saveName: settingsObj.saveName,
-      data: preset
-    }]
-  } else {
-    settingsObj.mySaves.push(
-      {
-        saveName: settingsObj.saveName,
-        data: preset
-      }
-    )
-  }
-}
+// const addToMySaves = (preset) => {
+//   if(!settingsObj.mySaves) {
+//     settingsObj.mySaves = [{
+//       saveName: settingsObj.saveName,
+//       data: preset
+//     }]
+//   } else {
+//     settingsObj.mySaves.push(
+//       {
+//         saveName: settingsObj.saveName,
+//         data: preset
+//       }
+//     )
+//   }
+// }
 
-const sendSavesToLocalStorage = () => {
-  const savesJSON = JSON.stringify(settingsObj.mySaves)
-  window.localStorage.setItem('savedPresets', savesJSON)
-}
+// const sendSavesToLocalStorage = () => {
+//   const savesJSON = JSON.stringify(settingsObj.mySaves)
+//   window.localStorage.setItem('savedPresets', savesJSON)
+// }
 
-const displaySaves = () => {
-  const {mySaves} = settingsObj
-  if(mySaves) {
-    loadButton.enable().show()
-    const savesElements = mySaves.map(i => (
-      `<option value="${i.saveName}">${i.saveName}</option>`
-    ))
-    savedPresetsSelector.innerHTML = savesElements
-  }
-}
+// const displaySaves = () => {
+//   const {mySaves} = settingsObj
+//   if(mySaves) {
+//     loadButton.enable().show()
+//     const savesElements = mySaves.map(i => (
+//       `<option value="${i.saveName}">${i.saveName}</option>`
+//     ))
+//     savedPresetsSelector.innerHTML = savesElements
+//   }
+// }
 
-const settingsObj = {
-  saveName: '',
-  savePreset() {
-    let preset = gui.save();
-    addToMySaves(preset);
-    console.log(settingsObj.mySaves);
-    sendSavesToLocalStorage();
-    displaySaves();
-  },
-  loadPreset() {
-    const {value} = savedPresetsSelector
-    const save = settingsObj.mySaves.find(i => i.saveName === value)
-    gui.load( save.data );
-  },
-  mySaves: []
-}
+// const settingsObj = {
+//   saveName: '',
+//   savePreset() {
+//     let preset = gui.save();
+//     addToMySaves(preset);
+//     console.log(settingsObj.mySaves);
+//     sendSavesToLocalStorage();
+//     displaySaves();
+//   },
+//   loadPreset() {
+//     const {value} = savedPresetsSelector
+//     const save = settingsObj.mySaves.find(i => i.saveName === value)
+//     gui.load( save.data );
+//   },
+//   mySaves: []
+// }
 
-const saveNameGui = gui.add(settingsObj, 'saveName')
-const savePreset = gui.add(settingsObj, 'savePreset')
-const loadButton = gui.add( settingsObj, 'loadPreset' ).disable()
+// const saveNameGui = gui.add(settingsObj, 'saveName')
+// const savePreset = gui.add(settingsObj, 'savePreset')
+// const loadButton = gui.add( settingsObj, 'loadPreset' ).disable()
 
-window.onload = () => {
-  if(settingsObj.mySaves) {
-    fetchSaves()
-    displaySaves()
-  }
-}
+// window.onload = () => {
+//   if(settingsObj.mySaves) {
+//     fetchSaves()
+//     displaySaves()
+//   }
+// }
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -283,6 +284,6 @@ const tick = () => {
   window.requestAnimationFrame(tick)
 }
 
-gui.add(gui, 'reset')
+// gui.add(gui, 'reset') TODO
 
 tick()
