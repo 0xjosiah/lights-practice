@@ -49,8 +49,8 @@ const presetsFolder = gui.addFolder("Saves")
 presetsFolder.add(settingsObj, 'value')
 presetsFolder.add(settingsObj, 'savePreset')
 
-let prevs = presetsFolder.add(settingsObj, 'mySaves', settingsObj.mySaves).hide()
-const loadButton = presetsFolder.add( settingsObj, 'loadPreset' ).disable().hide()
+let prevs = presetsFolder.add(settingsObj, 'mySaves', settingsObj.mySaves)
+const loadButton = presetsFolder.add( settingsObj, 'loadPreset' ).disable()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')

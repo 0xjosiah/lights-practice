@@ -1,28 +1,18 @@
-*
-{
+* {
     margin: 0;
     padding: 0;
 }
 
 html,
-body
-{
+body {
     overflow: hidden;
 }
 
-.webgl
-{
+.webgl {
     position: fixed;
     top: 0;
     left: 0;
     outline: none;
-}
-
-#gui {
-    position: fixed;
-    top: 0;
-    right: 0;
-    color: white;
 }
 
 .saves-container {
@@ -40,4 +30,11 @@ body
     word-break: break-all;
     padding-left: 0.55em;
     background: #424242;
+}
+
+#gui {
+    position: fixed;
+    top: 0;
+    right: 0;
+    color: white;
 }
