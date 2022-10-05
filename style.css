@@ -24,3 +24,20 @@ body
     right: 0;
     color: white;
 }
+
+.saves-container {
+    padding-bottom: .5em;
+}
+
+.select {
+    width: 95%;
+    margin: .35em auto;
+    display: block;
+    border-radius: 2px;
+    border: none;
+    height: var(--widget-height);
+    overflow: hidden;
+    word-break: break-all;
+    padding-left: 0.55em;
+    background: #424242;
+}

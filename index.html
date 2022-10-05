@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ThreeJS Lights</title>
   </head>
@@ -10,6 +11,17 @@
     <!-- <div id="app"></div> -->
     <script type="module" src="/main.js"></script>
     <canvas class="webgl"></canvas>
-    <div id="gui">faaack you</div>
+    <div id="gui" class="">
+      <div class="lil-gui saves-container">
+        <label for="saves" class="title">Select preset & click loadPreset</label>
+        <br>
+        <select id="saves" class="lil-gui select">
+          <option value="volvo" class="display option">Volvo</option>
+          <option value="saab" class="display option">Saab</option>
+          <option value="fiat" class="display option">Fiat</option>
+          <option value="audi" class="display option">Audi</option>
+        </select>
+      </div>
+    </div>
   </body>
 </html>
